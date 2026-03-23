@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import Quiz from './pages/Quiz'
 import Result from './pages/Result'
 import Leaderboard from './pages/Leaderboard'
+import Admin from './pages/Admin'
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem('token')
@@ -15,6 +16,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/admin" element={<PrivateRoute><Admin /></PrivateRoute>} />
         <Route path="/login"       element={<Login />} />
         <Route path="/register"    element={<Register />} />
         <Route path="/"            element={<PrivateRoute><Home /></PrivateRoute>} />

@@ -1,4 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import api from '../api'
 
 const getLevel = (correct, total) => {
   const pct = correct / total
@@ -16,6 +18,20 @@ export default function Result() {
   const total      = results.length
   const points     = results.reduce((sum, r) => sum + r.points, 0)
   const accuracy   = total > 0 ? Math.round((correct / total) * 100) : 0
+
+  useEffect(() => {
+  const user = JSON.parse(localStorage.getItem('user') || '{}')
+  if (!user.id) return
+
+  api.get(`/users/${user.id}`)
+    .then(({ data }) => {
+      localStorage.setItem('user', JSON.stringify({
+        ...user,
+        total_score: data.total_score
+      }))
+    })
+    .catch(() => {})
+  }, [])
 
   return (
     <div style={styles.container}>
